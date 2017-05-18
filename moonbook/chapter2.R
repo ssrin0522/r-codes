@@ -41,3 +41,4 @@ myhtml(out)
 out <- mytable(sex~age+Dx, data=acs)
 myhtml(out)
 myhtml(mytable(sex+DM~age+Dx, data=acs))
+
