@@ -141,3 +141,176 @@ mtext(side=3, line=0.5, "mtext, side=3, line=0.5")
 
 #6.9
 demo(plotmath)
+
+#7
+
+plot(sin, -pi, pi, ylab="y")
+plot(cos, -pi, pi, add=T, lty="dotted", col="red")
+legend(0, -0.5, legend=c('sin', 'cos'), lty=1:2, col=1:2)
+
+F <- function(x,a) { 1/(1+exp(-a-x))}
+curve(F(x,-1),col=1,xlim=c(-5,5),ylim=c(0,1),ylab="f(x)")
+par(new=TRUE)
+curve(F(x,1), col=2, xlim=c(-5,5), ylim=c(0,1), ylab="", axes=FALSE, lty=2)
+title(main=expression(f(x)==frac(1,1+exp(-a-x))))
+legend(2, 0.4, legend=c("a=-1", "a=1"), lty=1:2, col=1:2)
+
+#8
+help(Devices)
+
+png(filename="myplot1.png", width=480, height=480, units='px')
+plot(mpg~disp, data=mtcars)
+dev.off()
+
+#9.1 screen division
+
+attach(mtcars)
+opar <- par(no.readonly = T)
+par(mfrow=c(2,2))
+plot(wt, mpg, main="Scatterplot of wt vs. mpg")
+plot(wt, disp, main ="Scatterplot of wt vs disp")
+hist(wt, main="Histogram of wt")
+boxplot(wt, main = "Boxplot of wt")
+par(opar)
+detach(mtcars)
+
+attach(mtcars)
+opar <- par(no.readonly = T)
+par(mfrow=c(3,1))
+hist(wt)
+hist(mpg)
+hist(disp)
+par(opar)
+detach(mtcars)
+
+attach(mtcars)
+layout(matrix(c(1,1,2,3), 2,2, byrow=T))
+hist(wt)
+hist(mpg)
+hist(disp)
+detach(mtcars)
+
+#9.2
+
+attach(mtcars)
+layout(matrix(c(1,1,2,3), 2,2, byrow=TRUE),
+       widths=c(3,1), heights=c(1,2))
+hist(wt)
+hist(mpg)
+hist(disp)
+detach(mtcars)
+
+#9.3 detailed
+
+opar <- par(no.readonly = T)
+par(fig = c(0, 0.8, 0, 0.8)) # set up scatter plot
+plot(mtcars$wt, mtcars$mpg, xlab="Miles Per Gallon",
+     ylab="Car Weight")
+par(fig = c(0, 0.8, 0.55, 1), new=T) # add box plot above
+boxplot(mtcars$wt, horizontal= T, axes=F)
+par(fig = c(0.65, 1, 0, 0.8), new = T)
+boxplot(mtcars$mpg, axes=F)
+mtext("Enhanced Scatterplot", side=3, outer=T, line=-3)
+par(opar)
+
+opar <- par(no.readonly = T)
+par(mar=c(3,3,3,3))
+plot(1:10, type='n', axes=FALSE, xlab="", ylab="")
+box()
+rect(6,1.5,10,5)
+text(6,1.5, "x1", pos=1)
+text(10,1.5,"x2", pos=1)
+text(6,1.5,"y1", pos=2)
+text(6,5,"y2", pos=2)
+arrows(1,1,10,10,code=3)
+mtext("(0,0)", side=1, adj=-0.1)
+mtext("(1,1)", side=3, adj=1.1)
+par(opar)
+
+# 10
+
+year <- c(2010:2013)
+cost <- c(27145, 25455, 20723, 19054)
+sale <- c(41678, 44980, 57653, 73286)
+
+plot(cost~year, type="l")
+plot(sale~year, type="l", col="red")
+
+plot(cost~year, type="l")
+lines(year, sale, col="red")
+
+plot(cost~year, type="l", ylim=c(20000, 80000), xlab="year", ylab="")
+lines(year, sale, col="red")
+
+plot(cost~year, type="l", ylim=c(20000, 80000), axes=FALSE, xlab="year", ylab="") #축빼기
+lines(year, sale, col="red")
+axis(side=1, at=2010:2013, labels=year, line=2)
+axis(side=2,)
+
+plot(cost~year, type="l", axes=FALSE, xlab="year", ylab="cost")
+axis(side=1, at=2010:2013, labels=year, line=2)
+axis(side=2,)
+par(new=T)
+plot(sale~year, type="l", axes=FALSE, xlab="", ylab="", col="red")
+axis(side=4, col="red")
+mtext("sale", side=4, col="red")
+
+# margin
+par(mar=c(5,4,4,6)+0.1)
+plot(cost~year, type="o", pch=1, col="black", axes=FALSE, xlab="", ylab="", 
+     main="Sale and Cost, 2010~2013")
+axis(side=2,)
+mtext("Cost", side=2, line=2.5)
+box()
+par(new=TRUE)
+plot(sale~year, type="o", pch=2, col="red", axes=FALSE, xlab="", ylab="")
+axis(side=1, at=2010:2013, labels=year)
+mtext("Year", side=1, line=2)
+axis(side=4, col="red", col.axis="red")
+mtext("Sale", side=4, col="red", line=2.5)
+legend("top", legend=c("cost", "sale"), text.col=c("black", "red"),
+       pch=c(1,2), lty=1, col=c("black", "red"))
+
+# margin on the right side
+par(mar=c(5,4,4,6)+0.1)
+plot(cost~year, type="o", pch=1, col="black", axes=FALSE, xlab="", ylab="",
+     ylim=c(15000, 65000), main="Sale and Cost, 2010-2013")
+axis(side=2, at=c(20000, 25000, 30000))
+mtext("Cost", side=2, line=2.5, adj=0.2)
+box()
+par(new=TRUE)
+plot(sale~year, type="o", pch=2, col="red", axes=FALSE, xlab="", ylab="",
+     ylim=c(20000, 80000))
+axis(side=1, at=2010:2013, labels=year)
+mtext("Year", side=1, line=2)
+axis(side=4, at=seq(40000, 70000, 10000), col="red", col.axis='red')
+mtext("Sale", side=4, col="red", line=2.5, adj=0.6)
+legend('top', legend=c("cost", "sale"), text.col=c("black", "red"),
+       pch=c(1,2), lty=1, col=c("black", "red"))
+
+# margin on the right side 2
+
+par(mar=c(5,4,4,6)+0.1)
+plot(cost~year, type="n", axes=FALSE, xlab="", ylab="",
+     ylim=c(15000, 65000), main="Sale and Cost, 2010-2013")
+rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], border=FALSE,
+     col="gray88")
+abline(h=seq(15000, 30000, 5000), col="white")
+abline(v=2010:2013, col="white")
+par(new=TRUE)
+plot(cost~year, type="o", pch=1, col="black", axes=FALSE, xlab="", ylab="",
+     ylim=c(15000, 65000))
+axis(side=2, at=c(20000, 25000, 30000))
+mtext("Cost", side=2, line=2.5, adj=0.2)
+box()
+par(new=TRUE)
+plot(sale~year, type="n", pch=2, col="red", axes=FALSE, xlab="", ylab="",
+     ylim=c(20000, 75000))
+abline(h=seq(40000, 70000, 10000), col="white")
+lines(year, sale, type="o", pch=2, col="red")
+axis(side=1, at=2010:2013, labels=year)
+mtext("Year", side=1, line=2)
+axis(side=4, at=seq(40000, 70000, 10000), col="red", col.axis="red")
+mtext("Sale", side=4, col="red", line=2.5, adj=0.6)
+legend("top", legend=c("cost", "sale"), text.col=c("black", "red"),
+       pch=c(1,2), lty=1, col=c("black", "red"))
