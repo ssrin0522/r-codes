@@ -109,3 +109,78 @@ result1
 
 addmargins(result1)
 chisq.test(result1)
+
+# mean
+
+plot(mtcars)
+tapply(mtcars$mpg, mtcars$cyl, mean) # 평균구할 변량, 평균의 기준, 명령어
+
+aggregate(mpg~cyl, data=mtcars, mean)
+aggregate(mpg~cyl+am, data=mtcars, mean)
+
+# 엔진수에 따른 엔진출력(마력) 평균
+
+tapply(mtcars$hp, mtcars$cyl, mean)
+
+plot(mpg~cyl, data=mtcars)
+boxplot(mpg~cyl, data=mtcars)
+out <- lm(mpg~factor(cyl), data=mtcars)
+anova(out)
+
+# 결측값 처리
+
+Height <- c(168, 173, 160, 145, NA, 180)
+mean(Height)
+mean(Height[!is.na(Height)])
+mean(Height, na.rm=T)
+
+# 상관분석, 회귀분석
+
+#마력과 연비
+cor.test(mtcars$mpg, mtcars$hp)
+
+with(mtcars, cor.test(mpg,hp))
+
+plot(mpg~hp, data=mtcars)
+out1 <- lm(mpg~hp, data=mtcars)
+summary(out1)
+
+abline(out1, col="red")
+
+
+# 연속형 자료의 변형
+
+library(tidyverse)
+data(diamonds)
+str(diamonds)
+
+summary(diamonds)
+
+diamonds$PriceGroup <- 1
+diamonds$PriceGroup[diamonds$price >=1000] <- 2
+diamonds$PriceGroup[diamonds$price >= 5000] <- 3
+table(diamonds$PriceGroup)
+
+diamonds$PriceGroup <- ifelse(diamonds$price<1000, 1, ifelse(diamonds$price<5000, 2, 3))
+table(diamonds$PriceGroup)
+
+diamonds$PriceGroup <- cut(diamonds$price, breaks=c(0, 999, 4999, 99999), labels=c(1,2,3))
+table(diamonds$PriceGroup)
+
+rank2group <- function(y, k=4) {
+  count=length(y)
+  z=rank(y, ties.method="min")
+  return(floor((z-1)/(count/k))+1)
+}
+
+diamonds$PriceGroup <- rank2group(diamonds$price, 4)
+table(diamonds$PriceGroup)
+
+diamonds$PriceGroup3 <- rank2group(diamonds$price, 3)
+table(diamonds$PriceGroup3)
+
+aggregate(price~PriceGroup3, data=diamonds, range)
+
+diamonds$PriceGroup5 <- rank2group(diamonds$price, 5)
+table(diamonds$PriceGroup5)
+aggregate(price~PriceGroup5, data=diamonds, range)
