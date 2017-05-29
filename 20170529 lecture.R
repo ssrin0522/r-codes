@@ -11,7 +11,7 @@ library(wordcloud)
 # 사전 불러오기
 useSejongDic()
 
-data1 <- readLines("seoul_new.txt")
+data1 <- readLines("seoul_new.txt", encoding = "UTF-8")
 data1
 
 data2 <- sapply(data1, extractNoun, USE.NAMES = F)
@@ -47,6 +47,7 @@ data3 <- gsub("민원", "", data3)
 data3 <- gsub("이용", "", data3)
 data3 <- gsub("관련", "", data3)
 data3 <- gsub("시장", "", data3)
+data3 <- gsub("한", "", data3)
 
 write(unlist(data3), "seoul_3.txt")
 data4 <- read.table("seoul_3.txt")
