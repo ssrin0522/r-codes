@@ -278,6 +278,8 @@ x <- read.csv(file.choose(), header=T)
 x
 
 library(openxlsx)
+
+
 write.xlsx(quakes, "quakes.xlsx")
 
 ?write.xlsx
